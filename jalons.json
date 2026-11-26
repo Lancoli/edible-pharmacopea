@@ -1,0 +1,174 @@
+{
+  "projet": "ArchiveBotanique",
+  "but": "Une vraie boutique de boutures en tube : commander et payer en ligne.",
+  "cibles": [
+    {
+      "id": "paiement",
+      "niveau": "N3",
+      "texte": "Paiement branché et testé (commande réelle de bout en bout)",
+      "decide": "toi"
+    },
+    {
+      "id": "cgv",
+      "niveau": "N3",
+      "texte": "Mentions légales de vente, CGV, livraison et retours",
+      "decide": "toi"
+    }
+  ],
+  "jalons": [
+    {
+      "niveau": "N0",
+      "horizon": "2026-11-27",
+      "decide": "proposé",
+      "ouvert": true
+    },
+    {
+      "niveau": "N1",
+      "horizon": "2026-12-31",
+      "decide": "proposé",
+      "ouvert": false
+    },
+    {
+      "niveau": "N2",
+      "horizon": "2027-02-28",
+      "decide": "proposé",
+      "ouvert": false
+    },
+    {
+      "niveau": "N3",
+      "horizon": "2027-04-30",
+      "decide": "proposé",
+      "ouvert": false
+    }
+  ],
+  "criteres": [
+    {
+      "id": "paiement",
+      "niveau": "N3",
+      "texte": "une vraie commande payée, reçue et remboursée de bout en bout",
+      "type": "humain"
+    },
+    {
+      "id": "cgv",
+      "niveau": "N3",
+      "texte": "CGV, livraison et retours publiés",
+      "type": "humain"
+    }
+  ],
+  "exceptions": [],
+  "todo": [
+    {
+      "id": "auto-github",
+      "texte": "N0 · sur GitHub, à jour (origin, 0 commit non poussé)",
+      "pour": "github",
+      "preuve": "pas de remote origin",
+      "fait": false,
+      "auto": true
+    },
+    {
+      "id": "auto-readme",
+      "texte": "N0 · README : ce que c'est, comment le lancer (≥ 300 caractères)",
+      "pour": "readme",
+      "preuve": "README.md absent",
+      "fait": true,
+      "auto": true,
+      "fait_le": "2026-11-26T18:18:25.567Z"
+    },
+    {
+      "id": "auto-git",
+      "texte": "N0 · dépôt git propre (rien en attente de commit)",
+      "pour": "git",
+      "preuve": "1 fichier(s) non commité(s)",
+      "fait": true,
+      "auto": true,
+      "fait_le": "2026-11-26T18:20:22.960Z"
+    }
+  ],
+  "etat": {
+    "date": "2026-11-26T20:05:33.987Z",
+    "niveau": null,
+    "prochain": "N0",
+    "bloque": [
+      "github"
+    ],
+    "humain": {},
+    "criteres": {
+      "git": {
+        "ok": true,
+        "preuve": "propre"
+      },
+      "github": {
+        "ok": false,
+        "preuve": "pas de remote origin"
+      },
+      "readme": {
+        "ok": true,
+        "preuve": "862 caractères"
+      },
+      "conforme": {
+        "ok": true,
+        "preuve": "6 vérifications"
+      },
+      "liens": {
+        "ok": true,
+        "preuve": "13 références"
+      },
+      "console": {
+        "ok": true,
+        "preuve": "1 page(s) sans erreur (dernier passage)"
+      },
+      "mobile": {
+        "ok": true,
+        "preuve": "1 page(s) à 375 px (dernier passage)"
+      },
+      "remplissage": {
+        "ok": true,
+        "preuve": "1 page(s)"
+      },
+      "meta": {
+        "ok": false,
+        "preuve": "1/1 page(s) incomplète(s) — index.html : favicon, og:image"
+      },
+      "lighthouse": {
+        "ok": null,
+        "preuve": "outil pas encore installé"
+      },
+      "a11y": {
+        "ok": null,
+        "preuve": "outil pas encore installé"
+      },
+      "mentions": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      },
+      "en-ligne": {
+        "ok": null,
+        "preuve": "pas encore d'adresse publique"
+      },
+      "e2e": {
+        "ok": null,
+        "preuve": "scénario à écrire"
+      },
+      "audience": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      },
+      "surveillance": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      },
+      "sauvegarde": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      },
+      "paiement": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      },
+      "cgv": {
+        "ok": null,
+        "preuve": "à valider par toi"
+      }
+    }
+  }
+}
