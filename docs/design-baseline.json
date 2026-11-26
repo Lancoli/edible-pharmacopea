@@ -1,0 +1,21 @@
+{
+ "app": "ArchiveBotanique",
+ "date": "2026-11-26",
+ "mesures": {
+  "fichiers": 1,
+  "lignes": 1461,
+  "hexHorsRoot": 82,
+  "couleursDistinctes": 54,
+  "rgbaEnDur": 140,
+  "tailles": 38,
+  "interlettrages": 10,
+  "polygones": 2,
+  "ombres": 31,
+  "transitions": 18,
+  "couches": 13,
+  "arrondis": 43,
+  "survolQuiBouge": 0,
+  "important": 1,
+  "surcouches": 1
+ }
+}
