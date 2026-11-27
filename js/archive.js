@@ -180,6 +180,7 @@
     if (!direction) direction = i > state.armoire ? 1 : -1;
     state.armoire = i;
     save();
+    if (window.archiveRoute) window.archiveRoute.set('armoire', i);
     renderChoice();
     renderIntro();
     showLabel(null);
@@ -248,6 +249,16 @@
     $('#filtres').innerHTML = FILTERS.map(([k, l]) => `<button type="button" class="puce" data-filtre="${k}" aria-pressed="${state.filtre === k}">${l}</button>`).join('');
   }
 
+  function setFilter(f) {
+    if (!f || !FILTERS.some(([k]) => k === f)) f = 'tout';
+    state.filtre = f;
+    renderFilters();
+    $$('[data-id]', contentEl).forEach((t) => t.classList.toggle('estompe', !isMatch(byId[t.dataset.id])));
+    $$('[data-tag]', contentEl).forEach((t) => t.classList.toggle('estompe', !isMatch(byId[t.dataset.tag])));
+    renderRegistry();
+    if (window.archiveRoute) window.archiveRoute.set('filtre', f === 'tout' ? null : f);
+  }
+
   // ---------- The table: the clicked tube is set on it, with its card on leaf paper (ticket #27) ----------
   // On a large screen, clicking a tube sets it on the table: the cabinet slides left to make room.
   // While the table is served, hovering another tube changes the card. A second click opens the full sheet.
@@ -308,6 +319,7 @@
     const p = byId[id];
     if (!p) return;
     currentSheet = p;
+    if (window.archiveRoute) window.archiveRoute.set('fiche', id);
     const neon = p.secret ? '#ead08f' : A[p.armoire].neon;
     const n = stock(p);
     const alreadyTaken = inCart(p.id);
@@ -355,13 +367,19 @@
     if (first) first.focus({ preventScroll: true });
   }
 
+  function closeSheet() {
+    sheetEl.close();
+    currentSheet = null;
+    if (window.archiveRoute) window.archiveRoute.clear('fiche');
+  }
+
   sheetEl.addEventListener('click', (e) => {
-    if (e.target === sheetEl || e.target.closest('[data-fermer]')) return sheetEl.close();
+    if (e.target === sheetEl || e.target.closest('[data-fermer]')) return closeSheet();
     const v = e.target.closest('[data-voisin]');
     if (v && currentSheet) return openSheet(neighbours(currentSheet)[v.dataset.voisin === '-1' ? 0 : 1].id);
     if (e.target.closest('#fiche-ajout')) {
       const format = ($('input[name="format"]:checked', sheetEl) || {}).value || 'bouture';
-      if (addToCart(currentSheet.id, format)) sheetEl.close();
+      if (addToCart(currentSheet.id, format)) closeSheet();
       return;
     }
     if (e.target.closest('#fiche-rappel')) {
@@ -550,25 +568,43 @@
     e.preventDefault();
     seal();
   });
-  checkoutEl.addEventListener('close', () => { if (checkoutMode !== 'commande') checkoutMode = 'liste'; });
+  checkoutEl.addEventListener('close', () => {
+    if (checkoutMode !== 'commande') checkoutMode = 'liste';
+    if (window.archiveRoute) window.archiveRoute.clear('caisse');
+  });
 
   function openCheckout() {
     if (checkoutMode === 'scelle') checkoutMode = 'liste';
     renderCheckout();
     checkoutEl.showModal();
+    if (window.archiveRoute) window.archiveRoute.set('caisse', 'ouverte');
+  }
+
+  function closeCheckout() {
+    checkoutEl.close();
   }
 
   // ---------- Drawers and quarantine ----------
 
   const drawerEl = $('#tiroir');
-  function openDrawer(html) {
+  let currentDrawer = null;
+
+  function openDrawer(html, name) {
     drawerEl.innerHTML = `<div class="tiroir-corps">${html}<button type="button" class="fermer" data-fermer aria-label="Fermer">×</button></div>`;
     drawerEl.showModal();
+    currentDrawer = name;
+    if (window.archiveRoute) window.archiveRoute.set('tiroir', name);
+  }
+
+  function closeDrawer() {
+    drawerEl.close();
+    currentDrawer = null;
+    if (window.archiveRoute) window.archiveRoute.clear('tiroir');
   }
 
   function suppliesDrawer() {
     openDrawer(`<h2 id="tiroir-titre">Fournitures</h2><p>Tout ce qu'il faut pour sortir une bouture de son tube et l'installer.</p>
-      <div class="fournitures">${F.map((x) => `<div class="fourniture"><span><b>${x.nom}</b><small>${x.detail}</small></span><span class="prix">${euros(x.prix)}</span><button type="button" class="btn" data-fourniture="${x.id}">Ajouter</button></div>`).join('')}</div>`);
+      <div class="fournitures">${F.map((x) => `<div class="fourniture"><span><b>${x.nom}</b><small>${x.detail}</small></span><span class="prix">${euros(x.prix)}</span><button type="button" class="btn" data-fourniture="${x.id}">Ajouter</button></div>`).join('')}</div>`, 'fournitures');
   }
 
   const PADLOCK = `<svg viewBox="0 0 70 80" aria-hidden="true"><path d="M18 34V24a17 17 0 0 1 34 0v10" fill="none" stroke="currentColor" stroke-width="6"/><rect x="8" y="34" width="54" height="42" rx="5" fill="currentColor"/><circle cx="35" cy="52" r="6" fill="#1a120a"/><path d="M35 56v10" stroke="#1a120a" stroke-width="4"/></svg>`;
@@ -577,18 +613,18 @@
     const n = ownedCount();
     if (!drawerOpen()) {
       openDrawer(`<h2 id="tiroir-titre">Tiroir du collectionneur</h2><p>Deux spécimens qu'on ne montre pas sur les étagères. Le tiroir s'ouvre quand votre herbier compte ${DRAWER_THRESHOLD} spécimens différents.</p>
-        <div class="cadenas">${PADLOCK}<div class="cadenas-barre"><i style="width:${(n / DRAWER_THRESHOLD) * 100}%"></i></div><p>${n} sur ${DRAWER_THRESHOLD} spécimens dans votre herbier</p></div>`);
+        <div class="cadenas">${PADLOCK}<div class="cadenas-barre"><i style="width:${(n / DRAWER_THRESHOLD) * 100}%"></i></div><p>${n} sur ${DRAWER_THRESHOLD} spécimens dans votre herbier</p></div>`, 'collection');
       return;
     }
     openDrawer(`<h2 id="tiroir-titre">Tiroir du collectionneur</h2><p>Réservé aux herbiers de ${DRAWER_THRESHOLD} spécimens et plus. Un seul exemplaire de chaque, rarement réassorti.</p>
-      <div class="secrets">${SECRET_SPECIMENS.map((p) => `<button type="button" class="secret" data-ouvrir="${p.id}"><span class="mini">${Drawing.tube(p, { sansEtiquette: true })}</span><span><b>${nameHtml(p)}</b><span>${R[p.rarete].nom} · ${euros(p.prix)} · ${stockText(p)}</span></span></button>`).join('')}</div>`);
+      <div class="secrets">${SECRET_SPECIMENS.map((p) => `<button type="button" class="secret" data-ouvrir="${p.id}"><span class="mini">${Drawing.tube(p, { sansEtiquette: true })}</span><span><b>${nameHtml(p)}</b><span>${R[p.rarete].nom} · ${euros(p.prix)} · ${stockText(p)}</span></span></button>`).join('')}</div>`, 'collection');
   }
 
   let timer = null;
   function quarantineDrawer() {
     openDrawer(`<h2 id="tiroir-titre">En quarantaine</h2><p>Trois espèces arrivées cette semaine. Elles restent isolées deux semaines, le temps de vérifier qu'elles ne portent ni thrips ni cochenilles. Elles entrent dans les armoires le samedi 14 novembre à 18 h.</p>
       <div class="decompte" id="decompte"></div>
-      <form class="rappel" id="form-rappel"><label class="etiquette-champ" for="rappel-mail" hidden>E-mail</label><input id="rappel-mail" type="email" placeholder="votre@adresse.fr" autocomplete="email" required><button type="submit" class="btn">Me prévenir</button></form>`);
+      <form class="rappel" id="form-rappel"><label class="etiquette-champ" for="rappel-mail" hidden>E-mail</label><input id="rappel-mail" type="email" placeholder="votre@adresse.fr" autocomplete="email" required><button type="submit" class="btn">Me prévenir</button></form>`, 'quarantaine');
     const refresh = () => {
       const el = $('#decompte');
       if (!el) return clearInterval(timer);
@@ -604,20 +640,24 @@
   }
 
   drawerEl.addEventListener('click', (e) => {
-    if (e.target === drawerEl || e.target.closest('[data-fermer]')) return drawerEl.close();
+    if (e.target === drawerEl || e.target.closest('[data-fermer]')) return closeDrawer();
     const f = e.target.closest('[data-fourniture]');
     if (f) return addToCart(f.dataset.fourniture, 'fourniture');
     const o = e.target.closest('[data-ouvrir]');
-    if (o) { drawerEl.close(); openSheet(o.dataset.ouvrir); }
+    if (o) { closeDrawer(); openSheet(o.dataset.ouvrir); }
   });
   drawerEl.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!state.rappels.includes('quarantaine')) state.rappels.push('quarantaine');
     save();
     toast('Rappel noté pour le 14 novembre.');
-    drawerEl.close();
+    closeDrawer();
   });
-  drawerEl.addEventListener('close', () => clearInterval(timer));
+  drawerEl.addEventListener('close', () => {
+    clearInterval(timer);
+    if (window.archiveRoute && currentDrawer) window.archiveRoute.clear('tiroir');
+    currentDrawer = null;
+  });
 
   // ---------- Registry ----------
 
@@ -713,10 +753,22 @@
     if (!v) return;
     if (!v.open) v.showModal();
     v.scrollTop = 0;
+    if (window.archiveRoute) window.archiveRoute.set('vue', name);
   }
-  $$('dialog.vue').forEach((v) => v.addEventListener('click', (e) => {
-    if (e.target === v || e.target.closest('[data-fermer]')) v.close();
-  }));
+
+  function closeView(name) {
+    const v = $(`#vue-${name}`);
+    if (v) v.close();
+  }
+
+  $$('dialog.vue').forEach((v) => {
+    v.addEventListener('click', (e) => {
+      if (e.target === v || e.target.closest('[data-fermer]')) v.close();
+    });
+    v.addEventListener('close', () => {
+      if (window.archiveRoute) window.archiveRoute.clear('vue');
+    });
+  });
   document.addEventListener('click', (e) => {
     const l = e.target.closest('[data-vue], a[href="#herbier"], a[href="#registre"]');
     if (!l) return;
@@ -790,11 +842,7 @@
   $('#filtres').addEventListener('click', (e) => {
     const b = e.target.closest('[data-filtre]');
     if (!b) return;
-    state.filtre = b.dataset.filtre;
-    renderFilters();
-    $$('[data-id]', contentEl).forEach((t) => t.classList.toggle('estompe', !isMatch(byId[t.dataset.id])));
-    $$('[data-tag]', contentEl).forEach((t) => t.classList.toggle('estompe', !isMatch(byId[t.dataset.tag])));
-    renderRegistry();
+    setFilter(b.dataset.filtre);
   });
 
   contentEl.addEventListener('click', (e) => {
@@ -872,6 +920,23 @@
     updateCounter();
   }
 
+  // ---------- Public API for routing ----------
+
+  window.archiveSwitchCabinet = switchCabinet;
+  window.archiveSetFilter = setFilter;
+  window.archiveOpenSheet = openSheet;
+  window.archiveCloseSheet = closeSheet;
+  window.archiveOpenView = openView;
+  window.archiveCloseView = closeView;
+  window.archiveOpenDrawer = (name) => {
+    if (name === 'fournitures') suppliesDrawer();
+    else if (name === 'collection') collectionDrawer();
+    else if (name === 'quarantaine') quarantineDrawer();
+  };
+  window.archiveCloseDrawer = closeDrawer;
+  window.archiveOpenCheckout = openCheckout;
+  window.archiveCloseCheckout = closeCheckout;
+
   // ---------- Start ----------
 
   imgEl.src = A[state.armoire].image;
@@ -887,17 +952,6 @@
   };
   if (imgEl.complete) lightUp(); else imgEl.addEventListener('load', lightUp, { once: true });
 
-  // direct link to a sheet: #specimen-thai-constellation
-  function readLink() {
-    if (location.hash === '#herbier' || location.hash === '#registre') return openView(location.hash.slice(1));
-    const m = /^#specimen-([a-z0-9-]+)$/.exec(location.hash);
-    const p = m && byId[m[1]];
-    if (!p || (p.secret && !drawerOpen())) return;
-    if (p.secret) return openSheet(p.id);
-    switchCabinet(p.armoire, { instant: p.armoire !== state.armoire }).then(() => openSheet(p.id));
-  }
-  readLink();
-  window.addEventListener('hashchange', readLink);
   // preload the other cabinets
   window.addEventListener('load', () => A.forEach((a) => { const i = new Image(); i.src = a.image; }));
 })();
