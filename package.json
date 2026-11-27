@@ -1,0 +1,12 @@
+{
+  "name": "archive-botanique",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node tests/smoke.mjs"
+  },
+  "description": "Archive Botanique - collector's cabinet of botanical cuttings",
+  "author": "David Lancoli",
+  "license": "UNLICENSED"
+}
