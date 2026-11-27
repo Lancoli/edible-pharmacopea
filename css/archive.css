@@ -301,7 +301,7 @@ button { font: inherit; color: inherit; }
   border-radius: 999px;
   background: var(--metal-sombre);
   position: relative;
-  box-shadow: inset 0 1px 3px var(--noir-70);
+  box-shadow: inset var(--shadow-tight);
 }
 .interrupteur-levier::after {
   content: "";
@@ -312,7 +312,7 @@ button { font: inherit; color: inherit; }
   background: radial-gradient(circle at 35% 30%, var(--laiton-clair), var(--laiton-sombre));
   transition: left .2s ease-out, box-shadow .2s ease-out;
 }
-.interrupteur[aria-pressed="true"] .interrupteur-levier::after { left: 14px; box-shadow: 0 0 10px var(--neon); }
+.interrupteur[aria-pressed="true"] .interrupteur-levier::after { left: 14px; box-shadow: 0 0 10px var(--neon); /* glow, kept as is */ }
 
 .seve {
   display: inline-flex;
@@ -342,7 +342,7 @@ button { font: inherit; color: inherit; }
   cursor: pointer;
 }
 .btn-caisse svg { width: 22px; height: 18px; }
-.btn-caisse:hover { border-color: var(--laiton-clair); box-shadow: 0 0 0 1px var(--laiton-clair) inset; }
+.btn-caisse:hover { border-color: var(--laiton-clair); box-shadow: inset 0 0 0 1px var(--laiton-clair); }
 .caisse-nb {
   min-width: 22px;
   padding: 0 6px;
@@ -446,7 +446,7 @@ button { font: inherit; color: inherit; }
   cursor: pointer;
   transition: border-color .2s ease-out, box-shadow .2s ease-out;
 }
-.fleche:hover { border-color: var(--laiton-clair); box-shadow: 0 0 12px -4px var(--neon); }
+.fleche:hover { border-color: var(--laiton-clair); box-shadow: 0 0 12px -4px var(--neon); /* glow, kept as is */ }
 /* the four cabinets as real tab cards (ticket #30) */
 .choix-armoires { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .choix {
@@ -465,7 +465,7 @@ button { font: inherit; color: inherit; }
 .choix[aria-selected="true"] {
   border-color: var(--laiton);
   background: var(--bois-overlay-85);
-  box-shadow: 0 0 18px -6px var(--c);
+  box-shadow: 0 0 18px -6px var(--c); /* glow, kept as is */
 }
 .choix-num { grid-row: span 2; font-family: var(--f-titre); font-size: var(--fs-large); line-height: 1; color: var(--c); }
 .choix-nom { font-family: var(--f-latin); font-size: var(--fs-base); line-height: 1.15; color: var(--texte-doux); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -604,7 +604,7 @@ button { font: inherit; color: inherit; }
 .ratelier .rail {
   left: 0; right: 0; top: 0; height: 18%;
   background: linear-gradient(180deg, var(--gradient-metal-haut) 0%, var(--gradient-metal-moyen) 45%, var(--gradient-metal-bas) 100%);
-  box-shadow: 0 1px 3px var(--noir-40), inset 0 1px 0 var(--blanc-35);
+  box-shadow: var(--shadow-tight), inset 0 1px 0 var(--blanc-35);
   z-index: 2;
 }
 .ratelier .rail::before, .ratelier .rail::after {
@@ -636,7 +636,7 @@ button { font: inherit; color: inherit; }
   font-size: 1.05cqw;
   line-height: 1.2;
   white-space: nowrap;
-  box-shadow: 0 1px 3px var(--noir-60);
+  box-shadow: var(--shadow-tight);
   rotate: 5deg;
   transform-origin: 0 0;
   pointer-events: none;
@@ -793,7 +793,7 @@ button { font: inherit; color: inherit; }
   letter-spacing: .08em;
   text-transform: uppercase;
   white-space: nowrap;
-  box-shadow: 0 1px 2px var(--noir-60);
+  box-shadow: var(--shadow-tight);
   pointer-events: none;
   z-index: 2;
 }
@@ -825,7 +825,7 @@ button { font: inherit; color: inherit; }
   font-family: var(--f-etiq);
   font-size: 1cqw;
   line-height: 1.3;
-  box-shadow: 0 2px 6px var(--noir-60);
+  box-shadow: var(--shadow-tight);
   rotate: -3deg;
   pointer-events: none;
   z-index: 2;
@@ -943,10 +943,10 @@ button { font: inherit; color: inherit; }
   background-repeat: no-repeat, repeat;
   background-position: 115% 120%, 0 0;
   background-size: 62% auto, auto;
-  box-shadow: var(--shadow-layered), 0 0 0 1px var(--laiton-overlay-35);
+  box-shadow: var(--shadow-layered), inset 0 0 0 1px var(--laiton-overlay-35);
   rotate: -1.2deg;
 }
-.table.eclat .carte { box-shadow: var(--shadow-layered), 0 0 0 1px var(--laiton-overlay-35), 0 0 30px -8px var(--mauve-glow-60); }
+.table.eclat .carte { box-shadow: var(--shadow-layered), inset 0 0 0 1px var(--laiton-overlay-35), 0 0 30px -8px var(--mauve-glow-60); /* glow kept */ }
 .etq-origine { font-size: 14.5px; margin-top: 10px; color: var(--encre-pale); }
 @media (max-width: 999px), (hover: none) { .table { display: none; } }
 .etiquette {
@@ -967,7 +967,7 @@ button { font: inherit; color: inherit; }
   translate: -50% 0;
   border-radius: 50%;
   background: var(--nuit);
-  box-shadow: 0 0 0 2px var(--laiton);
+  box-shadow: inset 0 0 0 2px var(--laiton);
 }
 .etq-num { font-family: var(--f-etiq); font-size: var(--fs-small); letter-spacing: var(--letter-spacing-uppercase); color: var(--encre-pale); margin-top: 8px; text-transform: uppercase; }
 .etq-latin { font-family: var(--f-latin); font-size: var(--fs-large); line-height: 1.1; margin-top: 6px; }
@@ -1020,7 +1020,7 @@ button { font: inherit; color: inherit; }
   box-shadow: inset 0 1px 0 var(--blanc-50), var(--shadow-tight);
   transition: filter .2s ease-out, box-shadow .2s ease-out;
 }
-.btn:hover { filter: brightness(1.08); box-shadow: inset 0 1px 0 var(--blanc-50), 0 0 0 1px var(--encre) inset, var(--shadow-tight); }
+.btn:hover { filter: brightness(1.08); box-shadow: inset 0 1px 0 var(--blanc-50), inset 0 0 0 1px var(--encre), var(--shadow-tight); }
 .btn:disabled { filter: grayscale(.8) brightness(.8); cursor: not-allowed; }
 .btn-creux {
   background: transparent;
@@ -1048,7 +1048,7 @@ button { font: inherit; color: inherit; }
   cursor: pointer;
   transition: border-color .2s ease-out, box-shadow .2s ease-out;
 }
-.invite:hover, .invite:focus-visible { border-color: var(--laiton-clair); box-shadow: 0 0 0 1px var(--laiton) inset, 0 18px 40px -24px var(--neon); outline: none; }
+.invite:hover, .invite:focus-visible { border-color: var(--laiton-clair); box-shadow: inset 0 0 0 1px var(--laiton), 0 18px 40px -24px var(--neon); /* glow kept */ outline: none; }
 .invite-titre { font-family: var(--f-latin); font-size: var(--fs-large); color: var(--parchemin); line-height: 1.1; }
 .invite-texte { color: var(--texte-doux); font-size: var(--fs-base); }
 .invite-lien { margin-top: 6px; font-family: var(--f-etiq); font-size: var(--fs-small); color: var(--laiton-clair); }
@@ -1144,8 +1144,8 @@ dialog.vue .registre, dialog.vue .herbier { border-top: 0; padding-block: 30px 5
 .seve-jauge { display: grid; gap: 10px; min-width: 0; }
 .seve-titre { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--f-etiq); font-size: var(--fs-small); color: var(--texte-doux); }
 .seve-titre b { color: var(--seve-claire); font-weight: 400; }
-.seve-tube { position: relative; height: 14px; border-radius: 999px; background: var(--blanc-06); box-shadow: inset 0 1px 3px var(--noir-80), 0 0 0 1px var(--laiton-overlay-40); }
-.seve-tube i { position: absolute; inset: 2px auto 2px 2px; border-radius: 999px; background: linear-gradient(90deg, var(--vert-sombre), var(--seve-claire)); box-shadow: 0 0 10px var(--vert-glow-60); transition: width .6s ease-out; }
+.seve-tube { position: relative; height: 14px; border-radius: 999px; background: var(--blanc-06); box-shadow: inset var(--shadow-tight), inset 0 0 0 1px var(--laiton-overlay-40); }
+.seve-tube i { position: absolute; inset: 2px auto 2px 2px; border-radius: 999px; background: linear-gradient(90deg, var(--vert-sombre), var(--seve-claire)); box-shadow: 0 0 10px var(--vert-glow-60); /* glow kept */ transition: width .6s ease-out; }
 .paliers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .palier { padding: 8px 10px; border-left: 2px solid var(--laiton-overlay-35); font-size: var(--fs-base); color: var(--texte-doux); }
 .palier b { display: block; font-family: var(--f-etiq); font-weight: 400; font-size: var(--fs-small); color: var(--laiton); }
@@ -1270,7 +1270,7 @@ dialog::backdrop { background: var(--nuit-overlay-78); backdrop-filter: blur(3px
   left: 8%; right: 8%; bottom: 38px;
   height: 22px;
   background: linear-gradient(180deg, var(--gradient-bois-haut), var(--gradient-bois-bas));
-  box-shadow: 0 8px 20px var(--noir-70);
+  box-shadow: var(--shadow-layered);
 }
 .visionneuse .grand-tube { position: relative; z-index: 1; width: min(130px, 30%); aspect-ratio: 60 / 216; margin-bottom: 16px; filter: drop-shadow(0 0 22px color-mix(in srgb, var(--neon) 45%, transparent)); }
 .visionneuse .grand-tube svg { width: 100%; height: 100%; }
@@ -1362,7 +1362,7 @@ dialog::backdrop { background: var(--nuit-overlay-78); backdrop-filter: blur(3px
   max-height: 100dvh;
   background: linear-gradient(90deg, var(--gradient-caisse), var(--gradient-caisse));
   border-left: 1px solid var(--laiton-sombre);
-  box-shadow: -30px 0 80px var(--noir-70);
+  box-shadow: var(--shadow-wide);
 }
 .caisse[open] { animation: glisse .3s ease; }
 @keyframes glisse { from { opacity: 0; } }
@@ -1496,7 +1496,7 @@ dialog::backdrop { background: var(--nuit-overlay-78); backdrop-filter: blur(3px
   background-image: var(--grain-papier);
   color: var(--encre);
   font-size: var(--fs-base);
-  box-shadow: var(--shadow-layered), 0 0 0 1px var(--laiton-sombre);
+  box-shadow: var(--shadow-layered), inset 0 0 0 1px var(--laiton-sombre);
   animation: toast 4.2s ease forwards;
 }
 .toast b { font-family: var(--f-latin); font-weight: 400; font-style: italic; }
