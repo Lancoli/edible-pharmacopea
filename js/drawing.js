@@ -1,6 +1,6 @@
-// Dessin des spécimens : tubes, cloches, feuilles pressées.
-// Tout est généré en SVG à partir de la fiche « dessin » de chaque plante,
-// avec un hasard graine (l'id) pour que chaque tube soit toujours le même.
+// Drawing the specimens: tubes, bell jars, pressed leaves.
+// Everything is generated as SVG from each plant's "dessin" sheet,
+// with randomness seeded by the id so that each tube is always the same.
 (function () {
   'use strict';
 
@@ -19,7 +19,7 @@
   const newId = (p) => `${p}${(counter++).toString(36)}`;
   const f = (n) => Math.round(n * 1000) / 1000;
 
-  // ---------- Formes de feuilles (unité : base en 0,0, pointe en 0,-1) ----------
+  // ---------- Leaf shapes (unit: base at 0,0, tip at 0,-1) ----------
 
   function shape(name, w) {
     switch (name) {
@@ -37,12 +37,12 @@
       case 'ovale':
       case 'perforee':
         return `M0 0C${f(.85 * w)} -.08 ${f(.95 * w)} -.78 0 -1C${f(-.95 * w)} -.78 ${f(-.85 * w)} -.08 0 0Z`;
-      default: // lance, aiguille
+      default: // lance, needle
         return `M0 0C${f(.6 * w)} -.12 ${f(1.05 * w)} -.45 0 -1C${f(-1.05 * w)} -.45 ${f(-.6 * w)} -.12 0 0Z`;
     }
   }
 
-  // ---------- Motifs (dessinés en unité, découpés par la feuille) ----------
+  // ---------- Patterns (drawn in units, clipped by the leaf) ----------
 
   function patterns(d, w, r, ctx) {
     const mc = d.mc || '#efe6c8';
@@ -212,7 +212,7 @@
     return s;
   }
 
-  // ---------- Une feuille ----------
+  // ---------- A leaf ----------
 
   function leaf(d, x, y, angle, long, ctx, r, opts = {}) {
     const w = (opts.w || d.w || .5);
@@ -224,7 +224,7 @@
     const clip = newId('fc');
     ctx.defs.push(`<clipPath id="${clip}"><path d="${path}"/></clipPath>`);
 
-    // trous et découpes
+    // holes and cuts
     let mask = '';
     if (!opts.sansTrous && (fo === 'monstera' || fo === 'perforee' || fo === 'decoupee')) {
       const mid = newId('fm');
@@ -263,8 +263,8 @@
       + `${opts.revers ? '' : vein}</g></g>`;
   }
 
-  // ---------- La plante, dans une zone donnée ----------
-  // z = { cx, base, haut, l (largeur dispo), s (échelle) }
+  // ---------- The plant, inside a given area ----------
+  // z = { cx, base, haut, l (available width), s (scale) }
 
   function plant(p, z, ctx) {
     const d = p.dessin, r = seededRandom(p.id), s = z.s;
@@ -272,7 +272,7 @@
     const stem = d.tige || '#5d6b3a';
 
     if (d.forme === 'ecaille') {
-      // planche de bois, feuilles plaquées en tuiles
+      // wooden board, leaves laid flat like tiles
       const pw = 9 * s, top = z.haut + 4 * s;
       o += `<rect x="${f(z.cx - pw / 2)}" y="${f(top)}" width="${f(pw)}" height="${f(z.base - top + 6 * s)}" rx="${f(1.2 * s)}" fill="#5b3e26"/>`;
       for (let i = 0; i < 6; i++) o += `<path d="M${f(z.cx - pw / 2 + 1.5 * s + i * 1.2 * s)} ${f(top)}V${f(z.base)}" stroke="#3b2716" stroke-width="${f(.4 * s)}" opacity=".6"/>`;
@@ -304,7 +304,7 @@
     }
 
     if (d.forme === 'perles') {
-      // tige qui monte puis retombe, feuilles par paires
+      // stem that rises then falls, leaves in pairs
       const n = d.n || 8;
       const hx = z.cx + (r() < .5 ? -1 : 1) * z.l * .18, hy = z.haut + 6 * s;
       const fx = z.cx + (hx > z.cx ? 1 : -1) * z.l * .32, fy = z.base - (z.base - z.haut) * .25;
@@ -319,7 +319,7 @@
       return o;
     }
 
-    // tige classique, nœuds alternés
+    // classic stem, alternate nodes
     const n = d.n || 3;
     const thin = d.forme === 'aiguille';
     const h = (z.base - z.haut) * (d.h || (thin ? .85 : .64));
@@ -332,7 +332,7 @@
       const t = n === 1 ? .9 : .3 + (i / (n - 1)) * .7;
       const u = 1 - t;
       const x = u * u * sx + 2 * u * t * qx + t * t * ex, y = u * u * sy + 2 * u * t * qy + t * t * ey;
-      // nœud
+      // node
       o += `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(1.5 * s)}" ry="${f(.9 * s)}" fill="${stem}" opacity=".9"/>`;
       if (i === 0 && !thin) o += `<path d="M${f(x)} ${f(y)}q${f(sideSign * -3 * s)} ${f(6 * s)} ${f(sideSign * -2 * s)} ${f(14 * s)}" stroke="#8a6a44" stroke-width="${f(.8 * s)}" fill="none" stroke-linecap="round"/>`;
       const base = thin ? 11 : 50 * sizeN;
@@ -349,7 +349,7 @@
     return o;
   }
 
-  // ---------- Le milieu au fond du tube ----------
+  // ---------- The medium at the bottom of the tube ----------
 
   function middle(type, x0, x1, topY, bottomY, r) {
     if (type === 'gel') {
@@ -369,7 +369,7 @@
     return s;
   }
 
-  // ---------- Tube scellé ----------
+  // ---------- Sealed tube ----------
 
   const WAX = { 1: '#7a3326', 2: '#2f5a3a', 3: '#a07a2e', 4: '#5a3a7a', 5: '#c9a040' };
 
@@ -397,21 +397,21 @@
       mainBody += `<text x="30" y="118" text-anchor="middle" font-family="IM Fell English, Georgia, serif" font-size="30" fill="#2a3a30" opacity=".55">?</text>`;
     } else {
       mainBody += plant(p, { cx: 30, base: midTop + 6, haut: top + 8, l: x1 - x0, s: 1 }, ctx);
-      // racines dans la sphaigne ou l'eau
+      // roots in sphagnum or water
       for (let i = 0; i < 4; i++) mainBody += `<path d="M30 ${midTop + 5}q${f((r() - .5) * 10)} ${f(6 + r() * 6)} ${f((r() - .5) * 14)} ${f(12 + r() * 10)}" stroke="#e8dcc0" stroke-width=".6" fill="none" opacity="${midType === 'sphaigne' ? .35 : .75}"/>`;
-      // buée
+      // condensation
       for (let i = 0; i < 14; i++) mainBody += `<circle cx="${f(x0 + 2 + r() * (x1 - x0 - 4))}" cy="${f(top + 4 + r() * 46)}" r="${f(.4 + r() * 1.1)}" fill="#fff" opacity="${f(.12 + r() * .2)}"/>`;
     }
     mainBody += `</g>`;
-    // verre
+    // glass
     mainBody += `<path d="${inner}" fill="url(#${id}v)" stroke="rgba(230,250,240,.42)" stroke-width=".9"/>`;
     mainBody += `<rect x="${x0 + 3}" y="${top + 6}" width="2.2" height="140" rx="1.1" fill="#fff" opacity=".28"/>`;
     mainBody += `<rect x="${x1 - 5}" y="${top + 12}" width="1" height="120" rx=".5" fill="#fff" opacity=".18"/>`;
-    // étiquette papier collée
+    // glued paper label
     if (!opts.sansEtiquette) {
       mainBody += `<g transform="translate(30 ${midTop + 15})"><rect x="-11" y="-6" width="22" height="12" fill="#e8dcc0" opacity=".93"/><text y="2.6" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="6.2" fill="#3a2a1a">${mystery ? '· · ·' : 'N°' + String(p.n).padStart(2, '0')}</text></g>`;
     }
-    // lèvre, bouchon de liège et cire
+    // lip, cork stopper and wax
     const wax = mystery ? '#3a3a3a' : (p.eclat ? `url(#${id}i)` : WAX[p.rarete]);
     if (p.eclat && !mystery) ctx.defs.push(`<linearGradient id="${id}i" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#f2c4e8"/><stop offset=".3" stop-color="#9ad8f0"/><stop offset=".6" stop-color="#c8f0b0"/><stop offset="1" stop-color="#f0d890"/><animateTransform attributeName="gradientTransform" type="rotate" values="0 .5 .5;360 .5 .5" dur="6s" repeatCount="indefinite"/></linearGradient>`);
     mainBody += `<rect x="${x0 - 2.5}" y="${top - 3}" width="${x1 - x0 + 5}" height="5" rx="2.5" fill="rgba(230,250,240,.32)"/>`;
@@ -427,7 +427,7 @@
     return `<svg viewBox="0 0 60 216" class="tube-svg" aria-hidden="true" focusable="false"><defs>${ctx.defs.join('')}</defs>${mainBody}</svg>`;
   }
 
-  // ---------- Cloche de verre (spécimen d'archive) ----------
+  // ---------- Glass bell jar (archive specimen) ----------
 
   function bellJar(p) {
     const ctx = { defs: [] };
@@ -441,7 +441,7 @@
     let o = '';
     o += `<path d="${dome}" fill="url(#${id}h)"/>`;
     o += `<g clip-path="url(#${id}c)">`;
-    // butte de mousse
+    // moss mound
     o += `<path d="M44 214Q60 186 100 184T156 214Z" fill="#3a4a26"/>`;
     for (let i = 0; i < 40; i++) o += `<circle cx="${f(50 + r() * 100)}" cy="${f(194 + r() * 18)}" r="${f(1 + r() * 2.4)}" fill="${r() < .5 ? '#5a7a34' : '#4a6a2a'}"/>`;
     o += plant(p, { cx: 100, base: 192, haut: 50, l: 110, s: 2 }, ctx);
@@ -449,16 +449,16 @@
     o += `</g>`;
     o += `<path d="${dome}" fill="url(#${id}v)" stroke="rgba(240,250,240,.5)" stroke-width="1.4"/>`;
     o += `<path d="M52 200V100A48 48 0 0 1 82 52" stroke="#fff" stroke-width="3" fill="none" opacity=".25" stroke-linecap="round"/>`;
-    // bouton du dessus
+    // top knob
     o += `<rect x="94" y="22" width="12" height="14" rx="3" fill="url(#${id}l)"/><circle cx="100" cy="20" r="7" fill="url(#${id}l)"/>`;
-    // socle en laiton et bois
+    // brass and wood base
     o += `<rect x="28" y="212" width="144" height="10" rx="3" fill="url(#${id}l)"/>`;
     o += `<rect x="22" y="221" width="156" height="15" rx="2" fill="#3a2414"/><rect x="22" y="221" width="156" height="3" fill="#5a3a20"/>`;
     o += `<rect x="78" y="225" width="44" height="8" rx="1" fill="url(#${id}l)"/><text x="100" y="231.4" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="5.6" fill="#2a1a0a">N°${String(p.n).padStart(2, '0')}</text>`;
     return `<svg viewBox="0 0 200 240" class="cloche-svg" aria-hidden="true" focusable="false"><defs>${ctx.defs.join('')}</defs>${o}</svg>`;
   }
 
-  // ---------- Feuille pressée pour l'herbier ----------
+  // ---------- Pressed leaf for the herbarium ----------
 
   function pressed(p, owned) {
     const ctx = { defs: [] };
@@ -466,7 +466,7 @@
     const d = p.dessin;
     const fo = d.forme === 'perles' ? (d.feuille || 'coeur') : (d.forme === 'fronde' || d.forme === 'aiguille' ? 'lance' : d.forme);
     const w = d.forme === 'aiguille' ? .14 : d.forme === 'fronde' ? .35 : (d.w || .5);
-    // la feuille doit tenir dans la case, quelle que soit sa largeur
+    // the leaf must fit in the cell, whatever its width
     const scaleN = Math.round(Math.min(74, 40 / (1.15 * w)));
     const bottomY = 92 - (74 - scaleN) * .35;
     if (!owned) {

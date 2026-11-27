@@ -9,11 +9,11 @@ im = im.resize((W, H), Image.LANCZOS)
 hsv = np.asarray(im.convert('HSV')).astype(np.float32)
 h = hsv[..., 0] / 255 * 360
 s = hsv[..., 1]
-# masque de teinte : plage verte, bords doux (bois ~30-40° préservé)
+# hue mask: green range, soft edges (wood ~30-40° preserved)
 def ramp(x, a, b):
     return np.clip((x - a) / (b - a), 0, 1)
 mh = ramp(h, 44, 56) * (1 - ramp(h, 195, 215))
-# masque spatial : intérieur de l'armoire, bords doux
+# spatial mask: inside of the cabinet, soft edges
 yy, xx = np.mgrid[0:H, 0:W]
 xs, ys = xx / W, yy / H
 ms = ramp(xs, 0.085, 0.105) * (1 - ramp(xs, 0.895, 0.915)) * ramp(ys, 0.035, 0.05) * (1 - ramp(ys, 0.93, 0.97))

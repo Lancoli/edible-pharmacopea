@@ -1,6 +1,6 @@
-// Catalogue de l'Archive Botanique.
-// soins = [lumière, humidité, arrosage, croissance], chacun de 1 à 5.
-// dessin = paramètres lus par dessin.js pour peindre la bouture dans son tube.
+// The Archive Botanique catalogue.
+// soins = [light, humidity, watering, growth], each from 1 to 5.
+// dessin = parameters read by drawing.js to paint the cutting in its tube.
 window.ARMOIRES = [
   {
     id: 'aroidees', numero: 'I', nom: 'Aroïdées', image: 'assets/img/cabinet-green.jpg', neon: '#8fe8b8',
@@ -33,7 +33,7 @@ window.RARETES = {
 };
 
 window.SPECIMENS = [
-  // ——— Armoire I · Aroïdées ———
+  // ——— Cabinet I · Aroids ———
   {
     id: 'thai-constellation', n: 1, armoire: 0, place: [1, 0],
     latin: 'Monstera deliciosa', cultivar: 'Thai Constellation', fr: 'Monstera constellation', famille: 'Araceae',
@@ -115,7 +115,7 @@ window.SPECIMENS = [
     dessin: { forme: 'lance', n: 3, l: 1.5, w: .2, c: '#1b4626', c2: '#3d7a3c', motif: ['nervures'], mc: '#9cc890' }
   },
 
-  // ——— Armoire II · Hoyas & cireuses ———
+  // ——— Cabinet II · Hoyas & wax plants ———
   {
     id: 'krimson-queen', n: 11, armoire: 1, place: [1, 0],
     latin: 'Hoya carnosa', cultivar: 'Krimson Queen', fr: 'Fleur de porcelaine panachée', famille: 'Apocynaceae',
@@ -197,7 +197,7 @@ window.SPECIMENS = [
     dessin: { forme: 'lance', n: 2, l: 1.45, w: .38, c: '#3a682e', c2: '#5e8c3e', motif: ['nervures', 'epais'], mc: '#c4dc96' }
   },
 
-  // ——— Armoire III · Bégonias & bijoux ———
+  // ——— Cabinet III · Begonias & jewels ———
   {
     id: 'maculata', n: 21, armoire: 2, place: [1, 0],
     latin: 'Begonia maculata', cultivar: 'Wightii', fr: 'Bégonia à pois', famille: 'Begoniaceae',
@@ -279,7 +279,7 @@ window.SPECIMENS = [
     dessin: { forme: 'ovale', n: 4, l: .72, w: .55, c: '#284828', c2: '#3d6a38', motif: ['or', 'velours'], mc: '#f2d27a' }
   },
 
-  // ——— Armoire IV · Cabinet de curiosités ———
+  // ——— Cabinet IV · Cabinet of curiosities ———
   {
     id: 'marcgravia', n: 31, armoire: 3, place: [1, 0],
     latin: 'Marcgravia sintenisii', fr: 'Marcgravia en écailles', famille: 'Marcgraviaceae',
@@ -362,7 +362,7 @@ window.SPECIMENS = [
   }
 ];
 
-// Le tiroir du collectionneur : s'ouvre à partir de 5 spécimens dans l'herbier.
+// The collector's drawer: opens from 5 specimens in the herbarium.
 window.TIROIR_SECRET = [
   {
     id: 'mint', n: 41, armoire: null, secret: true,

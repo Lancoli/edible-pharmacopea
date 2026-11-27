@@ -61,7 +61,7 @@
         <button type="button" class="fleche" data-pas="-1" aria-label="Armoire précédente">‹</button>
         <div class="choix-armoires" id="choix-armoires" role="tablist" aria-label="Choisir une armoire"></div>
         <button type="button" class="fleche" data-pas="1" aria-label="Armoire suivante">›</button>
-        <!-- filtres et recherche cachés pour l'instant (ticket #30) : on se promène dans la collection -->
+        <!-- filters and search hidden for now (ticket #30): visitors wander through the collection -->
         <div class="filtres" id="filtres" role="group" aria-label="Montrer dans l'armoire" hidden></div>
         <div class="recherche" hidden>
           <label for="recherche" class="etiquette-champ">Chercher un nom</label>
@@ -84,7 +84,7 @@
           <button type="button" class="tiroir tiroir-d" id="tiroir-d"><span id="tiroir-d-label">Tiroir du collectionneur</span></button>
         </div>
       </div>
-      <!-- la table : un tube cliqué y est posé avec sa carte, l'armoire glisse pour lui faire place (ticket #27) -->
+      <!-- the table: a clicked tube is set on it with its card, the cabinet slides aside to make room (ticket #27) -->
       <aside class="table" id="table" aria-label="Le spécimen posé sur la table" aria-live="polite" inert>
         <div class="table-in">
           <button type="button" class="fermer" data-ranger aria-label="Ranger le spécimen">×</button>
@@ -95,7 +95,7 @@
     </div>
   </section>
 
-  <!-- l'herbier et le registre ne sont plus dans le défilement : on les consulte (ticket #30) -->
+  <!-- the herbarium and the registry are no longer in the scroll: they are opened on demand (ticket #30) -->
   <section class="consulter" aria-label="À consulter">
     <div class="section-in consulter-in">
       <button type="button" class="invite" data-vue="herbier">

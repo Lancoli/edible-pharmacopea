@@ -1,15 +1,18 @@
-# Archive Botanique — règles de l'app
+# Archive Botanique — app rules
 
-Une boutique de boutures en tube, présentée comme une armoire de collection (voir [README.md](README.md)).
-Règles communes : [../CLAUDE.md](../CLAUDE.md).
+A shop of cuttings in tubes, presented as a collector's cabinet (see [README.md](README.md)).
+Shared rules: [../CLAUDE.md](../CLAUDE.md).
 
-## Règles propres
+## Own rules
 
-- **L'armoire « Botanical Archive »** en quatre néons est l'identité : on la garde.
-- **Le paiement n'est pas branché** : rien dans l'interface ne doit laisser croire qu'on peut payer tant qu'il ne l'est
-  pas. Le brancher (paiement, conditions de vente) est l'objectif N3 (`jalons.json`).
-- Les fichiers `*.avant-*` sont des sauvegardes : jamais servies (exclues de l'image), à archiver dans `_archive/`.
+- **The "Botanical Archive" cabinet** in four neons is the identity: keep it.
+- **Payment is not wired**: nothing in the interface may suggest that one can pay until it is. Wiring it (payment,
+  terms of sale) is the N3 goal (`jalons.json`).
+- `*.avant-*` files are backups: never served (excluded from the image), to be archived in `_archive/`.
+- **Languages**: code, comments and docs in English. The interface is French; the data globals (`window.ARMOIRES`,
+  `SPECIMENS`…) and their keys (`nom`, `soins`, `dessin`…) stay French until the i18n step (root rule "Language").
+  The storage key `archive-botanique-v1` is kept: visitors' carts and herbariums live under it.
 
-## Vérifier
+## Check
 
 `node tools/jalons.mjs ArchiveBotanique` · `node tools/design-lint.mjs ArchiveBotanique` · `lancer liens ArchiveBotanique`.

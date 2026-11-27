@@ -1,4 +1,4 @@
-// Archive Botanique : armoires, fiches, caisse et herbier.
+// Archive Botanique: cabinets, sheets, checkout and herbarium.
 (function () {
   'use strict';
 
@@ -9,7 +9,7 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 
-  // Position des étagères dans l'image de l'armoire (en % de la hauteur)
+  // Shelf positions in the cabinet image (in % of the height)
   const SHELVES = { 1: 27.7, 2: 44.1, 3: 59.4 };
   const COLUMNS = [32, 50, 68];
   const BELL_JAR = { x: 50, base: 75.2 };
@@ -24,14 +24,14 @@
   ];
   const ROMAN_NUMERALS = ['I', 'II', 'III'];
 
-  // ---------- État, gardé dans ce navigateur ----------
+  // ---------- State, kept in this browser ----------
 
   const STORE_KEY = 'archive-botanique-v1';
   const state = { armoire: 0, neons: true, filtre: 'tout', panier: [], herbier: {}, pris: {}, seve: 0, rappels: [] };
   try {
     const stored = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
     if (stored && typeof stored === 'object') Object.assign(state, stored);
-  } catch (e) { /* stockage indisponible : on repart de zéro */ }
+  } catch (e) { /* storage unavailable: start from scratch */ }
   if (!(state.armoire >= 0 && state.armoire < A.length)) state.armoire = 0;
   state.panier = (state.panier || []).filter((l) => byId[l.id] || supplyById[l.id]);
 
@@ -39,10 +39,10 @@
     try {
       const { armoire: cabinet, neons, panier: cart, herbier: herbarium, pris: taken, seve: sap, rappels: reminders } = state;
       localStorage.setItem(STORE_KEY, JSON.stringify({ armoire: cabinet, neons, panier: cart, herbier: herbarium, pris: taken, seve: sap, rappels: reminders }));
-    } catch (e) { /* tant pis */ }
+    } catch (e) { /* never mind */ }
   }
 
-  // ---------- Petits outils ----------
+  // ---------- Small helpers ----------
 
   const fmt = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
   const fmtRond = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
@@ -109,7 +109,7 @@
     setTimeout(() => t.remove(), 4300);
   }
 
-  // ---------- Ornements posés sur les étagères ----------
+  // ---------- Ornaments set on the shelves ----------
 
   const ORNAMENTS = {
     livres: `<svg viewBox="0 0 90 64"><rect x="4" y="46" width="82" height="16" rx="1" fill="#5a1e1a"/><rect x="80" y="47" width="5" height="14" fill="#e6dcc0"/><path d="M14 46v16M70 46v16" stroke="#c9a35b" stroke-width="1.2"/><rect x="10" y="32" width="70" height="14" rx="1" fill="#24402c"/><rect x="74" y="33" width="5" height="12" fill="#e6dcc0"/><path d="M18 32v14M62 32v14" stroke="#c9a35b" stroke-width="1"/><rect x="6" y="20" width="74" height="12" rx="1" fill="#6a4a1e"/><rect x="74" y="21" width="5" height="10" fill="#efe4c8"/><text x="40" y="29" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="6.5" fill="#e8cf8f">FLORA</text><rect x="14" y="2" width="9" height="18" fill="#3a2a4a"/><path d="M14 6h9M14 16h9" stroke="#c9a35b" stroke-width=".8"/></svg>`,
@@ -130,7 +130,7 @@
     return `${nameText(p)}, ${R[p.rarete].nom}${p.eclat ? ', éclat' : ''}, ${euros(p.prix)}, ${stockText(p)}`;
   }
 
-  // ---------- L'armoire ----------
+  // ---------- The cabinet ----------
 
   const cabinetEl = $('#armoire'), imgEl = $('#armoire-img'), contentEl = $('#contenu');
 
@@ -153,11 +153,11 @@
       } else {
         const [e, c] = p.place;
         h += `<button type="button" class="tube r${p.rarete}${classes}" data-id="${p.id}" style="left:${COLUMNS[c]}%;bottom:${100 - SHELVES[e]}%" aria-label="${escapeHtml(ariaSpec(p))}"><span class="halo"></span>${Drawing.tube(p)}${p.eclat ? glitter(p) : ''}${stock(p) ? '' : '<span class="badge-epuise">Épuisé</span>'}</button>`;
-        // pas d'étiquette de prix dans l'armoire pour l'instant (ticket #27) : le prix est dans la fiche
+        // no price tag in the cabinet for now (ticket #27): the price is on the sheet
       }
     }
 
-    // la quarantaine, couchée sur la vitre du bas
+    // the quarantine, lying on the bottom pane
     h += `<span class="carton" style="left:13.5%;top:81.6%">Quarantaine<br>sortie le 14 nov.</span>`;
     [35, 50, 65].forEach((x, i) => {
       const q = { id: `quarantaine-${state.armoire}-${i}`, n: 0, rarete: 1, dessin: {} };
@@ -172,7 +172,7 @@
     document.documentElement.style.setProperty('--neon', A[state.armoire].neon);
   }
 
-  // d'une armoire à l'autre : l'armoire glisse sur le côté, la suivante arrive de l'autre (ticket #30)
+  // from one cabinet to the next: the cabinet slides to one side, the next arrives from the other (ticket #30)
   const calme = matchMedia('(prefers-reduced-motion: reduce)');
   let change = 0;
   function switchCabinet(i, { instant = false, direction = 0 } = {}) {
@@ -216,7 +216,7 @@
     });
   }
 
-  // ---------- Console : onglets d'armoires ----------
+  // ---------- Console: cabinet tabs ----------
 
   function renderChoice() {
     $('#choix-armoires').innerHTML = A.map((a, i) => {
@@ -248,10 +248,10 @@
     $('#filtres').innerHTML = FILTERS.map(([k, l]) => `<button type="button" class="puce" data-filtre="${k}" aria-pressed="${state.filtre === k}">${l}</button>`).join('');
   }
 
-  // ---------- La table : le tube cliqué y est posé, avec sa carte sur papier feuille (ticket #27) ----------
-  // Sur grand écran, un clic sur un tube le pose sur la table : l'armoire glisse à gauche pour lui faire place.
-  // Tant que la table est servie, survoler un autre tube change la carte. Un second clic ouvre la fiche complète.
-  // Sur téléphone, pas de table : le clic ouvre la fiche, comme avant.
+  // ---------- The table: the clicked tube is set on it, with its card on leaf paper (ticket #27) ----------
+  // On a large screen, clicking a tube sets it on the table: the cabinet slides left to make room.
+  // While the table is served, hovering another tube changes the card. A second click opens the full sheet.
+  // On a phone, no table: the click opens the sheet, as before.
 
   const sceneEl = $('.scene'), tableEl = $('#table');
   const wideScreen = matchMedia('(min-width: 1000px) and (hover: hover)');
@@ -293,7 +293,7 @@
     if (e.key === 'Escape' && onTable && !document.querySelector('dialog[open]')) showLabel(null);
   });
 
-  // ---------- Fiche ----------
+  // ---------- Sheet ----------
 
   const sheetEl = $('#fiche');
   let currentSheet = null;
@@ -389,7 +389,7 @@
     f.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
   });
 
-  // ---------- Caisse ----------
+  // ---------- Checkout ----------
 
   const checkoutEl = $('#caisse');
   let checkoutMode = 'liste';
@@ -558,7 +558,7 @@
     checkoutEl.showModal();
   }
 
-  // ---------- Tiroirs et quarantaine ----------
+  // ---------- Drawers and quarantine ----------
 
   const drawerEl = $('#tiroir');
   function openDrawer(html) {
@@ -619,7 +619,7 @@
   });
   drawerEl.addEventListener('close', () => clearInterval(timer));
 
-  // ---------- Registre ----------
+  // ---------- Registry ----------
 
   let sortBy = { cle: 'n', sens: 1 };
   function renderRegistry() {
@@ -654,11 +654,11 @@
     renderRegistry();
   });
 
-  // ---------- Herbier ----------
+  // ---------- Herbarium ----------
 
   const cabinetComplete = (i) => S.filter((p) => p.armoire === i).every((p) => state.herbier[p.id] > 0);
 
-  // « Monstera deliciosa » devient « M. deliciosa », comme sur une planche d'herbier
+  // "Monstera deliciosa" becomes "M. deliciosa", as on a herbarium plate
   function abbreviate(latin) {
     const words = latin.split(' ');
     return words.length > 1 ? `${words[0][0]}. ${words.slice(1).join(' ')}` : latin;
@@ -706,7 +706,7 @@
     $('#invite-herbier').textContent = `${n} spécimen${n > 1 ? 's' : ''} sur ${total} · ${Math.round(state.seve)} gouttes de sève`;
   }
 
-  // ---------- L'herbier et le registre : consultés à part, en plein écran (ticket #30) ----------
+  // ---------- The herbarium and the registry: opened apart, full screen (ticket #30) ----------
 
   function openView(name) {
     const v = $(`#vue-${name}`);
@@ -724,7 +724,7 @@
     openView(l.dataset.vue || l.getAttribute('href').slice(1));
   });
 
-  // ---------- Chiffres d'ouverture ----------
+  // ---------- Opening figures ----------
 
   function renderFigures() {
     const tubes = S.reduce((t, p) => t + stock(p), 0);
@@ -737,7 +737,7 @@
     ].map(([v, l]) => `<div><dt>${l}</dt><dd>${v}</dd></div>`).join('');
   }
 
-  // ---------- Recherche ----------
+  // ---------- Search ----------
 
   const field = $('#recherche'), results = $('#recherche-res');
   function search() {
@@ -773,7 +773,7 @@
   });
   document.addEventListener('click', (e) => { if (!e.target.closest('.recherche')) results.hidden = true; });
 
-  // ---------- Événements généraux ----------
+  // ---------- Global events ----------
 
   $('#choix-armoires').addEventListener('click', (e) => {
     const b = e.target.closest('[data-armoire]');
@@ -805,7 +805,7 @@
     }
     if (e.target.closest('[data-quarantaine]')) quarantineDrawer();
   });
-  // la table servie : survoler un autre tube change la carte, sans faire bouger l'armoire
+  // table served: hovering another tube changes the card without moving the cabinet
   const hovered = (e) => {
     const t = e.target.closest('[data-id]');
     if (t && onTable && onTable !== t.dataset.id) showLabel(byId[t.dataset.id]);
@@ -813,7 +813,7 @@
   contentEl.addEventListener('pointerover', hovered);
   contentEl.addEventListener('focusin', hovered);
 
-  // passer d'une armoire à l'autre : flèches de la console, flèches du clavier, glissé du doigt, molette horizontale
+  // switch cabinets: console arrows, keyboard arrows, finger swipe, horizontal wheel
   const neighbour = (step) => switchCabinet((state.armoire + step + A.length) % A.length, { sens: step });
   $$('.fleche[data-pas]').forEach((b) => b.addEventListener('click', () => neighbour(+b.dataset.pas)));
   document.addEventListener('keydown', (e) => {
@@ -872,7 +872,7 @@
     updateCounter();
   }
 
-  // ---------- Démarrage ----------
+  // ---------- Start ----------
 
   imgEl.src = A[state.armoire].image;
   applyNeon();
@@ -880,14 +880,14 @@
   renderIntro();
   applyNeons();
   renderAll();
-  // les néons s'allument une fois l'image prête
+  // the neons light up once the image is ready
   const lightUp = () => {
     cabinetEl.classList.add('allumage');
     setTimeout(() => cabinetEl.classList.remove('allumage'), 1150);
   };
   if (imgEl.complete) lightUp(); else imgEl.addEventListener('load', lightUp, { once: true });
 
-  // lien direct vers une fiche : #specimen-thai-constellation
+  // direct link to a sheet: #specimen-thai-constellation
   function readLink() {
     if (location.hash === '#herbier' || location.hash === '#registre') return openView(location.hash.slice(1));
     const m = /^#specimen-([a-z0-9-]+)$/.exec(location.hash);
@@ -898,6 +898,6 @@
   }
   readLink();
   window.addEventListener('hashchange', readLink);
-  // précharge les autres armoires
+  // preload the other cabinets
   window.addEventListener('load', () => A.forEach((a) => { const i = new Image(); i.src = a.image; }));
 })();
