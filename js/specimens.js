@@ -362,7 +362,7 @@ window.SPECIMENS = [
   }
 ];
 
-// The collector's drawer: opens from 5 specimens in the herbarium.
+// Collector's drawer: opens when the herbarium has 5 specimens.
 window.TIROIR_SECRET = [
   {
     id: 'mint', n: 41, armoire: null, secret: true,

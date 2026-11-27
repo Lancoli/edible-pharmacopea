@@ -24,7 +24,7 @@
   ];
   const ROMAN_NUMERALS = ['I', 'II', 'III'];
 
-  // ---------- State, kept in this browser ----------
+  // ---------- State, stored in this browser ----------
 
   const STORE_KEY = 'archive-botanique-v1';
   const state = { armoire: 0, neons: true, filtre: 'tout', panier: [], herbier: {}, pris: {}, seve: 0, rappels: [] };
@@ -42,7 +42,7 @@
     } catch (e) { /* never mind */ }
   }
 
-  // ---------- Small helpers ----------
+  // ---------- Helpers ----------
 
   const fmt = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
   const fmtRond = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
@@ -89,7 +89,7 @@
     do d.setDate(d.getDate() + 1); while (d.getDay() !== 1 && d.getDay() !== 2);
     return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   }
-  const winter = () => [10, 11, 0, 1, 2].includes(new Date().getMonth());
+  const isWinter = () => [10, 11, 0, 1, 2].includes(new Date().getMonth());
 
   function isMatch(p) {
     switch (state.filtre) {
@@ -157,7 +157,7 @@
       }
     }
 
-    // the quarantine, lying on the bottom pane
+    // Quarantine specimens lying on the bottom pane
     h += `<span class="carton" style="left:13.5%;top:81.6%">Quarantaine<br>sortie le 14 nov.</span>`;
     [35, 50, 65].forEach((x, i) => {
       const q = { id: `quarantaine-${state.armoire}-${i}`, n: 0, rarete: 1, dessin: {} };
@@ -172,7 +172,7 @@
     document.documentElement.style.setProperty('--neon', A[state.armoire].neon);
   }
 
-  // from one cabinet to the next: the cabinet slides to one side, the next arrives from the other (ticket #30)
+  // Cabinet transition: the current one slides to one side, the next arrives from the other (ticket #30)
   const calme = matchMedia('(prefers-reduced-motion: reduce)');
   let change = 0;
   function switchCabinet(i, { instant = false, direction = 0 } = {}) {
@@ -259,10 +259,10 @@
     if (window.archiveRoute) window.archiveRoute.set('filtre', f === 'tout' ? null : f);
   }
 
-  // ---------- The table: the clicked tube is set on it, with its card on leaf paper (ticket #27) ----------
-  // On a large screen, clicking a tube sets it on the table: the cabinet slides left to make room.
-  // While the table is served, hovering another tube changes the card. A second click opens the full sheet.
-  // On a phone, no table: the click opens the sheet, as before.
+  // ---------- Table: clicked tube with its card on leaf paper (ticket #27) ----------
+  // On a large screen, clicking a tube displays it on the table: the cabinet slides left to make room.
+  // While the table is active, hovering another tube changes the card. A second click opens the full sheet.
+  // On a phone, no table: clicking directly opens the sheet.
 
   const sceneEl = $('.scene'), tableEl = $('#table');
   const wideScreen = matchMedia('(min-width: 1000px) and (hover: hover)');
@@ -497,7 +497,7 @@
       foot = `<div class="caisse-pied">
         <div class="total-ligne"><span>Sous-total</span><span>${fmt.format(subtotal)}</span></div>
         <div class="total-ligne${shippingCost ? '' : ' offert'}"><span>Colissimo suivi</span><span>${shippingCost ? fmt.format(shippingCost) : 'offert'}</span></div>
-        ${winter() ? '<div class="total-ligne offert"><span>Sachet chauffant 40 h</span><span>offert</span></div>' : ''}
+        ${isWinter() ? '<div class="total-ligne offert"><span>Sachet chauffant 40 h</span><span>offert</span></div>' : ''}
         <div class="total-ligne grand"><span>Total</span><span>${fmt.format(total)}</span></div>
         <p class="caisse-note">${missing > 0 ? `Encore ${fmt.format(missing)} pour le port offert. ` : ''}Prochain envoi : ${nextShipping()}. Sève gagnée : ${Math.round(sapOf(state.panier))} gouttes.</p>
         ${checkoutMode === 'commande'
@@ -698,7 +698,7 @@
 
   const cabinetComplete = (i) => S.filter((p) => p.armoire === i).every((p) => state.herbier[p.id] > 0);
 
-  // "Monstera deliciosa" becomes "M. deliciosa", as on a herbarium plate
+  // "Monstera deliciosa" becomes "M. deliciosa", as on herbarium plates
   function abbreviate(latin) {
     const words = latin.split(' ');
     return words.length > 1 ? `${words[0][0]}. ${words.slice(1).join(' ')}` : latin;
@@ -746,7 +746,7 @@
     $('#invite-herbier').textContent = `${n} spécimen${n > 1 ? 's' : ''} sur ${total} · ${Math.round(state.seve)} gouttes de sève`;
   }
 
-  // ---------- The herbarium and the registry: opened apart, full screen (ticket #30) ----------
+  // ---------- Herbarium and registry: opened separately, full screen (ticket #30) ----------
 
   function openView(name) {
     const v = $(`#vue-${name}`);
@@ -776,7 +776,7 @@
     openView(l.dataset.vue || l.getAttribute('href').slice(1));
   });
 
-  // ---------- Opening figures ----------
+  // ---------- Opening statistics ----------
 
   function renderFigures() {
     const tubes = S.reduce((t, p) => t + stock(p), 0);
@@ -853,7 +853,7 @@
     }
     if (e.target.closest('[data-quarantaine]')) quarantineDrawer();
   });
-  // table served: hovering another tube changes the card without moving the cabinet
+  // Table active: hovering another tube changes the card without moving the cabinet
   const hovered = (e) => {
     const t = e.target.closest('[data-id]');
     if (t && onTable && onTable !== t.dataset.id) showLabel(byId[t.dataset.id]);
@@ -861,7 +861,7 @@
   contentEl.addEventListener('pointerover', hovered);
   contentEl.addEventListener('focusin', hovered);
 
-  // switch cabinets: console arrows, keyboard arrows, finger swipe, horizontal wheel
+  // Cabinet navigation: console arrows, keyboard arrows, touch swipe, horizontal wheel
   const neighbour = (step) => switchCabinet((state.armoire + step + A.length) % A.length, { sens: step });
   $$('.fleche[data-pas]').forEach((b) => b.addEventListener('click', () => neighbour(+b.dataset.pas)));
   document.addEventListener('keydown', (e) => {
@@ -945,13 +945,13 @@
   renderIntro();
   applyNeons();
   renderAll();
-  // the neons light up once the image is ready
+  // Neons light up once the image is loaded
   const lightUp = () => {
     cabinetEl.classList.add('allumage');
     setTimeout(() => cabinetEl.classList.remove('allumage'), 1150);
   };
   if (imgEl.complete) lightUp(); else imgEl.addEventListener('load', lightUp, { once: true });
 
-  // preload the other cabinets
+  // Preload other cabinet images
   window.addEventListener('load', () => A.forEach((a) => { const i = new Image(); i.src = a.image; }));
 })();

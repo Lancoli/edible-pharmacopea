@@ -1,4 +1,4 @@
-# Archive Botanique — Guide UI : un cabinet de collectionneur
+# Archive Botanique — UI Guide: a collector's cabinet
 
 > **Status: in progress** — this design system file defines the application-specific UI rules for Archive Botanique.
 > The common method for the whole portfolio is [../../docs/DESIGN-SYSTEM.md](../../docs/DESIGN-SYSTEM.md).
