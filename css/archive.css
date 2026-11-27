@@ -3,27 +3,27 @@
    The cabinet is the stage; everything else steps back around it. */
 :root {
   color-scheme: dark;
-  --nuit: #0a0f0c;
-  --boiserie: #18120c;
-  --mousse: #142019;
-  --laiton: #c9a35b;
-  --laiton-clair: #ead08f;
-  --laiton-sombre: #6e542a;
-  --parchemin: #e8dcc0;
-  --parchemin-ombre: #c9b78f;
-  --encre: #2a2118;
-  --encre-pale: #6b5a45;
-  --sceau: #8f2b22;
-  --texte: #e4dac4;
-  --texte-doux: #a69a82;
-  --neon: #8fe8b8;
+  --hue: 42;
+  --nuit: hsl(var(--hue), 15%, 4%);
+  --boiserie: hsl(var(--hue), 20%, 7%);
+  --mousse: hsl(calc(var(--hue) + 120), 15%, 8%);
+  --laiton: hsl(var(--hue), 45%, 58%);
+  --laiton-clair: hsl(var(--hue), 55%, 75%);
+  --laiton-sombre: hsl(var(--hue), 45%, 30%);
+  --parchemin: hsl(var(--hue), 40%, 85%);
+  --parchemin-ombre: hsl(var(--hue), 35%, 70%);
+  --encre: hsl(var(--hue), 25%, 15%);
+  --encre-pale: hsl(var(--hue), 20%, 36%);
+  --texte: hsl(var(--hue), 35%, 82%);
+  --texte-doux: hsl(var(--hue), 20%, 58%);
+  --sceau: hsl(5, 60%, 35%);
+  --neon: hsl(155, 75%, 75%);
+  --r1: hsl(80, 15%, 65%);
+  --r2: hsl(140, 40%, 65%);
+  --r3: hsl(45, 65%, 65%);
+  --r4: hsl(280, 65%, 72%);
+  --r5: hsl(48, 85%, 72%);
   --h-bandeau: 61px;
-
-  --r1: #a7ae98;
-  --r2: #8cc79a;
-  --r3: #e0bd6e;
-  --r4: #c9a0ef;
-  --r5: #f4d47e;
 
   --f-titre: system-ui, -apple-system, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   --f-latin: system-ui, -apple-system, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
