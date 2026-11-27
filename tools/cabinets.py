@@ -19,7 +19,7 @@ xs, ys = xx / W, yy / H
 ms = ramp(xs, 0.085, 0.105) * (1 - ramp(xs, 0.895, 0.915)) * ramp(ys, 0.035, 0.05) * (1 - ramp(ys, 0.93, 0.97))
 mask = mh * ms
 mask = np.asarray(Image.fromarray((mask * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(3))).astype(np.float32) / 255
-variants = {'verte': (None, 1.0, 1.0), 'ambre': (38, 1.45, 1.18), 'bleue': (198, 1.1, 1.05), 'prune': (284, 0.95, 1.04)}
+variants = {'green': (None, 1.0, 1.0), 'amber': (38, 1.45, 1.18), 'blue': (198, 1.1, 1.05), 'plum': (284, 0.95, 1.04)}
 for name, (dh, sat, val) in variants.items():
     out = hsv.copy()
     if dh is None:
@@ -33,6 +33,6 @@ for name, (dh, sat, val) in variants.items():
     out[..., 1] = np.clip(s * (1 + (sat - 1) * mask), 0, 255)
     out[..., 2] = np.clip(hsv[..., 2] * (1 + (val - 1) * mask), 0, 255)
     rgb = Image.fromarray(out.astype(np.uint8), 'HSV').convert('RGB')
-    rgb.save(os.path.join(outdir, f'armoire-{name}.jpg'), quality=80, optimize=True, progressive=True)
+    rgb.save(os.path.join(outdir, f'cabinet-{name}.jpg'), quality=80, optimize=True, progressive=True)
     rgb.resize((467, 700), Image.LANCZOS).save(os.path.join(outdir, f'thumb-{name}.jpg'), quality=72)
 print('ok')
