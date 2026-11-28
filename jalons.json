@@ -61,10 +61,10 @@
       "id": "auto-github",
       "texte": "N0 · sur GitHub, à jour (origin, 0 commit non poussé)",
       "pour": "github",
-      "preuve": "1 commit(s) non poussé(s)",
+      "preuve": "3 commit(s) non poussé(s)",
       "fait": true,
       "auto": true,
-      "fait_le": "2026-11-27T04:17:14.260Z"
+      "fait_le": "2026-11-27T08:46:59.845Z"
     },
     {
       "id": "auto-readme",
@@ -104,7 +104,7 @@
     }
   ],
   "etat": {
-    "date": "2026-11-27T04:17:14.260Z",
+    "date": "2026-11-27T12:10:40.259Z",
     "niveau": null,
     "prochain": "N0",
     "bloque": [
@@ -142,7 +142,7 @@
       },
       "liens": {
         "ok": true,
-        "preuve": "13 références",
+        "preuve": "14 références",
         "niveau": "N1",
         "texte": "tout ce qui est cité existe (tools/liens.mjs)",
         "type": "auto"
@@ -240,7 +240,7 @@
       },
       "e2e": {
         "ok": null,
-        "preuve": "scénario à écrire (champ « test » de jalons.json)",
+        "preuve": "scenario to write (\"test\" field in milestones.json)",
         "niveau": "N3",
         "texte": "le parcours critique passe de bout en bout",
         "type": "auto"
