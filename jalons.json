@@ -80,9 +80,9 @@
       "texte": "N0 · dépôt git propre (rien en attente de commit)",
       "pour": "git",
       "preuve": "1 fichier(s) non commité(s)",
-      "fait": false,
+      "fait": true,
       "auto": true,
-      "fait_le": "2026-11-26T18:20:22.960Z"
+      "fait_le": "2026-11-28T13:59:48.013Z"
     },
     {
       "id": "auto-licence",
@@ -101,20 +101,28 @@
       "fait": true,
       "auto": true,
       "fait_le": "2026-11-27T03:37:40.648Z"
+    },
+    {
+      "id": "auto-console",
+      "texte": "N1 · chaque page s'ouvre sans erreur JS ni ressource en erreur",
+      "pour": "console",
+      "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's'",
+      "fait": false,
+      "auto": true
     }
   ],
   "etat": {
-    "date": "2026-11-27T12:10:40.259Z",
-    "niveau": null,
-    "prochain": "N0",
+    "date": "2026-11-28T13:59:48.013Z",
+    "niveau": "N0",
+    "prochain": "N1",
     "bloque": [
-      "git"
+      "console"
     ],
     "humain": {},
     "criteres": {
       "git": {
-        "ok": false,
-        "preuve": "1 fichier(s) non commité(s)",
+        "ok": true,
+        "preuve": "propre",
         "niveau": "N0",
         "texte": "dépôt git propre (rien en attente de commit)",
         "type": "auto"
@@ -148,8 +156,8 @@
         "type": "auto"
       },
       "console": {
-        "ok": true,
-        "preuve": "1 page(s) sans erreur",
+        "ok": false,
+        "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's'",
         "niveau": "N1",
         "texte": "chaque page s'ouvre sans erreur JS ni ressource en erreur",
         "type": "auto"
@@ -184,14 +192,14 @@
       },
       "meta": {
         "ok": false,
-        "preuve": "1/1 page(s) incomplète(s) — index.html : favicon, og:image",
+        "preuve": "1/1 page(s) incomplète(s) — index.html : favicon",
         "niveau": "N2",
         "texte": "lang, title, description, viewport, favicon, og:image sur chaque page",
         "type": "auto"
       },
       "robots": {
-        "ok": false,
-        "preuve": "robots.txt, sitemap.xml absent(s)",
+        "ok": true,
+        "preuve": "robots.txt, sitemap.xml",
         "niveau": "N2",
         "texte": "SEO technique : robots.txt et sitemap.xml",
         "type": "auto"
