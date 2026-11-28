@@ -4,21 +4,25 @@
 window.ARMOIRES = [
   {
     id: 'aroidees', numero: 'I', nom: 'Aroïdées', image: 'assets/img/cabinet-green.jpg', neon: '#8fe8b8',
+    alt: 'Armoire vitrée aux néons verts, étagères garnies de tubes de boutures d\'aroïdées.',
     sous: 'Araceae · forêts humides des tropiques',
     texte: 'Monstera, philodendrons, anthuriums. Les feuilles à trous, les velours, les panachures qui font les collections. Néons verts, sphaigne humide.'
   },
   {
     id: 'hoyas', numero: 'II', nom: 'Hoyas & cireuses', image: 'assets/img/cabinet-amber.jpg', neon: '#f3c978',
+    alt: 'Armoire vitrée aux néons ambrés, étagères garnies de tubes de boutures de hoyas.',
     sous: 'Apocynaceae · fleurs de porcelaine',
     texte: 'Feuilles épaisses comme de la cire, lianes qui fleurissent en ombelles parfumées le soir. Des boutures solides, qui supportent bien le voyage.'
   },
   {
     id: 'begonias', numero: 'III', nom: 'Bégonias & bijoux', image: 'assets/img/cabinet-blue.jpg', neon: '#8fd4f5',
+    alt: 'Armoire vitrée aux néons bleus, étagères garnies de tubes de boutures de bégonias.',
     sous: 'Begoniaceae, Orchidaceae · sous-bois et terrariums',
     texte: 'Pois, spirales, feuilles noires et reflets bleus. La plupart vivent mieux sous cloche ou en terrarium : humidité haute, lumière douce.'
   },
   {
     id: 'curiosites', numero: 'IV', nom: 'Cabinet de curiosités', image: 'assets/img/cabinet-plum.jpg', neon: '#d6a8f5',
+    alt: 'Armoire vitrée aux néons prunes, étagères garnies de tubes de plantes rares et curieuses.',
     sous: 'Écailles, carapaces, fossiles vivants',
     texte: 'Plantes qui grimpent à plat comme des tuiles, fougères en cuir de crocodile, une lignée vieille de 400 millions d\'années.'
   }

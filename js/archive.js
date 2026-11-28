@@ -190,6 +190,7 @@
       const ready = () => {
         if (token !== change) return endAt();
         imgEl.src = a.image;
+        imgEl.alt = a.alt;
         applyNeon();
         renderCabinet();
         if (!instant && !calme.matches && cabinetEl.animate) {
@@ -940,6 +941,7 @@
   // ---------- Start ----------
 
   imgEl.src = A[state.armoire].image;
+  imgEl.alt = A[state.armoire].alt;
   applyNeon();
   renderFilters();
   renderIntro();

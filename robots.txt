@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lancoli.com/archive-botanique/sitemap.xml
