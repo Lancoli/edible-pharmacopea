@@ -106,13 +106,13 @@
       "id": "auto-console",
       "texte": "N1 · chaque page s'ouvre sans erreur JS ni ressource en erreur",
       "pour": "console",
-      "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's'",
+      "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's' (dernier passage)",
       "fait": false,
       "auto": true
     }
   ],
   "etat": {
-    "date": "2026-11-28T13:59:48.013Z",
+    "date": "2026-11-28T16:37:17.419Z",
     "niveau": "N0",
     "prochain": "N1",
     "bloque": [
@@ -157,14 +157,14 @@
       },
       "console": {
         "ok": false,
-        "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's'",
+        "preuve": "1 erreur(s), ex. index.html : Unexpected identifier 's' (dernier passage)",
         "niveau": "N1",
         "texte": "chaque page s'ouvre sans erreur JS ni ressource en erreur",
         "type": "auto"
       },
       "mobile": {
         "ok": true,
-        "preuve": "1 page(s) à 375 px",
+        "preuve": "1 page(s) à 375 px (dernier passage)",
         "niveau": "N1",
         "texte": "aucune page plus large que 375 px",
         "type": "auto"
